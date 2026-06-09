@@ -242,10 +242,6 @@ async function carregarHorarios() {
 
 }
 
-dataSelect.addEventListener(
-  "change",
-  carregarHorarios
-);
 
 document
   .getElementById("agendamentoForm")
@@ -271,7 +267,7 @@ document
         document.getElementById("turma").value;
 
       const data =
-        dataSelect.value;
+        dataSelecionada;
 
       const horario =
         horarioSelect.value;
