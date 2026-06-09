@@ -35,7 +35,14 @@ async function carregarDatas() {
   }
 
   datasDisponiveis =
-    data.map(item => item.data);
+  data.map(item =>
+    String(item.data).substring(0, 10)
+  );
+
+console.log(
+  "Datas carregadas:",
+  datasDisponiveis
+);
 
   gerarCalendarios();
 
