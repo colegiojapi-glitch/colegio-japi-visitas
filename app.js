@@ -10,8 +10,9 @@ const supabaseClient =
     SUPABASE_KEY
   );
 
-const dataSelect =
-  document.getElementById("data");
+let dataSelecionada = null;
+
+let datasDisponiveis = [];
 
 const horarioSelect =
   document.getElementById("horario");
