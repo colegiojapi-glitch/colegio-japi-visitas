@@ -205,7 +205,7 @@ function criarCalendario(
 async function carregarHorarios() {
 
   const dataEscolhida =
-  dataSelecionada;
+    dataSelecionada;
 
   horarioSelect.innerHTML =
     '<option>Carregando...</option>';
