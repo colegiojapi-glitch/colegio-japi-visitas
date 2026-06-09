@@ -283,13 +283,30 @@ if (error) {
   return;
 }
 
-await supabaseClient
-  .from("horarios")
-  .update({
-    disponivel: false
-  })
-  .eq("data_id", dataInfo.id)
-  .eq("horario", horario);
+const resultadoUpdate =
+  await supabaseClient
+    .from("horarios")
+    .update({
+      disponivel: false
+    })
+    .eq("data_id", dataInfo.id)
+    .eq("horario", horario)
+    .select();
+
+console.log(
+  "DATA INFO:",
+  dataInfo
+);
+
+console.log(
+  "HORARIO:",
+  horario
+);
+
+console.log(
+  "UPDATE:",
+  resultadoUpdate
+);
 
       if (error) {
 
