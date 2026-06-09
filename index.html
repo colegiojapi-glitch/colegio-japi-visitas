@@ -1,10 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Colégio Japi</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colégio Japi - Agendamento de Visitas</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <h1>Colégio Japi</h1>
-    <p>Site em construção.</p>
+
+<header class="topo">
+  <img src="assets/logo.jpg" alt="Colégio Japi" class="logo">
+
+  <h1>Agendamento de Visitas</h1>
+
+  <p>
+    Rua Dr. Hegg, 505 – Vila Arens II – Jundiaí/SP
+  </p>
+
+  <a
+    href="https://www.instagram.com/colegiojapi/"
+    target="_blank"
+    class="instagram"
+  >
+    @colegiojapi
+  </a>
+</header>
+
+<main class="container">
+
+  <div class="card">
+
+    <h2>Agende sua visita</h2>
+
+    <form id="agendamentoForm">
+
+      <input
+        type="text"
+        id="responsavel"
+        placeholder="Nome do responsável"
+        required
+      >
+
+      <input
+        type="text"
+        id="telefone"
+        placeholder="Telefone"
+        required
+      >
+
+      <input
+        type="email"
+        id="email"
+        placeholder="E-mail"
+      >
+
+      <input
+        type="text"
+        id="aluno"
+        placeholder="Nome do aluno"
+        required
+      >
+
+      <select id="turma" required>
+        <option value="">Selecione a turma</option>
+        <option value="Fundamental I">
+          Fundamental I
+        </option>
+        <option value="Fundamental II">
+          Fundamental II
+        </option>
+      </select>
+
+      <select id="data" required>
+        <option>Carregando datas...</option>
+      </select>
+
+      <select id="horario" required>
+        <option>Selecione uma data</option>
+      </select>
+
+      <button type="submit">
+        Agendar Visita
+      </button>
+
+    </form>
+
+    <div id="mensagem"></div>
+
+  </div>
+
+</main>
+
+<script src="app.js"></script>
+
 </body>
 </html>
