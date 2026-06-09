@@ -74,9 +74,21 @@
         </option>
       </select>
 
-      <select id="data" required>
-        <option>Carregando datas...</option>
-      </select>
+      <div class="calendario-container">
+
+  <h3>Escolha uma data</h3>
+
+  <div id="mesAtual" class="calendario"></div>
+
+  <div id="proximoMes" class="calendario"></div>
+
+</div>
+
+<input
+  type="hidden"
+  id="dataSelecionada"
+  required
+>
 
       <select id="horario" required>
         <option>Selecione uma data</option>
