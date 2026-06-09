@@ -40,6 +40,7 @@ async function carregarDatas() {
   gerarCalendarios();
 
 }
+
 function gerarCalendarios() {
 
   const hoje = new Date();
@@ -61,6 +62,7 @@ function gerarCalendarios() {
   );
 
 }
+
 function criarCalendario(
   ano,
   mes,
@@ -69,6 +71,8 @@ function criarCalendario(
 
   const container =
     document.getElementById(elementoId);
+
+  if (!container) return;
 
   container.innerHTML = "";
 
@@ -131,14 +135,11 @@ function criarCalendario(
       item.onclick = () => {
 
         document
-          .querySelectorAll(
-            ".dia"
-          )
-          .forEach(
-            d =>
-              d.classList.remove(
-                "selecionado"
-              )
+          .querySelectorAll(".dia")
+          .forEach(d =>
+            d.classList.remove(
+              "selecionado"
+            )
           );
 
         item.classList.add(
@@ -175,37 +176,10 @@ function criarCalendario(
 
 }
 
-  const { data, error } =
-    await supabaseClient
-      .from("datas_disponiveis")
-      .select("*")
-      .eq("ativa", true)
-      .order("data");
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  dataSelect.innerHTML =
-    '<option value="">Selecione a data</option>';
-
-  data.forEach(item => {
-
-    dataSelect.innerHTML += `
-      <option value="${item.data}">
-        ${item.data}
-      </option>
-    `;
-
-  });
-
-}
-
 async function carregarHorarios() {
 
-  const dataEscolhida =
-    dataSelecionada;
+  if (!dataSelecionada)
+    return;
 
   horarioSelect.innerHTML =
     '<option>Carregando...</option>';
@@ -214,7 +188,7 @@ async function carregarHorarios() {
     await supabaseClient
       .from("datas_disponiveis")
       .select("*")
-      .eq("data", dataEscolhida)
+      .eq("data", dataSelecionada)
       .single();
 
   if (!dataInfo) return;
@@ -242,7 +216,6 @@ async function carregarHorarios() {
 
 }
 
-
 document
   .getElementById("agendamentoForm")
   .addEventListener(
@@ -250,6 +223,15 @@ document
     async (e) => {
 
       e.preventDefault();
+
+      if (!dataSelecionada) {
+
+        mensagem.innerHTML =
+          "Selecione uma data.";
+
+        return;
+
+      }
 
       const responsavel =
         document.getElementById("responsavel").value;
@@ -266,9 +248,6 @@ document
       const turma =
         document.getElementById("turma").value;
 
-      const data =
-        dataSelecionada;
-
       const horario =
         horarioSelect.value;
 
@@ -282,7 +261,7 @@ document
               email,
               aluno,
               turma,
-              data,
+              data: dataSelecionada,
               horario
             }
           ]);
@@ -307,7 +286,7 @@ document
 Responsável: ${responsavel}
 Aluno: ${aluno}
 Turma: ${turma}
-Data: ${data}
+Data: ${dataSelecionada}
 Horário: ${horario}
 Telefone: ${telefone}`;
 
@@ -327,6 +306,19 @@ Telefone: ${telefone}`;
       document
         .getElementById("agendamentoForm")
         .reset();
+
+      horarioSelect.innerHTML =
+        '<option>Selecione uma data</option>';
+
+      dataSelecionada = null;
+
+      document
+        .querySelectorAll(".dia")
+        .forEach(d =>
+          d.classList.remove(
+            "selecionado"
+          )
+        );
 
     }
   );
