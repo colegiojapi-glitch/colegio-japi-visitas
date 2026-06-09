@@ -100,3 +100,49 @@ button:hover{
     }
 
 }
+.calendario-container{
+    margin-bottom:20px;
+}
+
+.calendario{
+    margin-bottom:30px;
+}
+
+.calendario-titulo{
+    text-align:center;
+    margin-bottom:10px;
+    color:#555;
+}
+
+.grade-calendario{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:6px;
+}
+
+.dia{
+    padding:12px;
+    text-align:center;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.disponivel{
+    background:#f28c28;
+    color:white;
+    cursor:pointer;
+}
+
+.disponivel:hover{
+    opacity:0.9;
+}
+
+.indisponivel{
+    background:#ddd;
+    color:#999;
+}
+
+.selecionado{
+    background:#555;
+    color:white;
+}
