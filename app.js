@@ -40,6 +40,140 @@ async function carregarDatas() {
   gerarCalendarios();
 
 }
+function gerarCalendarios() {
+
+  const hoje = new Date();
+
+  criarCalendario(
+    hoje.getFullYear(),
+    hoje.getMonth(),
+    "mesAtual"
+  );
+
+  criarCalendario(
+    hoje.getMonth() === 11
+      ? hoje.getFullYear() + 1
+      : hoje.getFullYear(),
+
+    (hoje.getMonth() + 1) % 12,
+
+    "proximoMes"
+  );
+
+}
+function criarCalendario(
+  ano,
+  mes,
+  elementoId
+) {
+
+  const container =
+    document.getElementById(elementoId);
+
+  container.innerHTML = "";
+
+  const titulo =
+    document.createElement("h3");
+
+  titulo.className =
+    "calendario-titulo";
+
+  titulo.innerText =
+    new Date(
+      ano,
+      mes
+    ).toLocaleDateString(
+      "pt-BR",
+      {
+        month: "long",
+        year: "numeric"
+      }
+    ).toUpperCase();
+
+  container.appendChild(titulo);
+
+  const grade =
+    document.createElement("div");
+
+  grade.className =
+    "grade-calendario";
+
+  const diasMes =
+    new Date(
+      ano,
+      mes + 1,
+      0
+    ).getDate();
+
+  for (
+    let dia = 1;
+    dia <= diasMes;
+    dia++
+  ) {
+
+    const dataFormatada =
+      `${ano}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+
+    const item =
+      document.createElement("div");
+
+    item.innerText = dia;
+
+    if (
+      datasDisponiveis.includes(
+        dataFormatada
+      )
+    ) {
+
+      item.className =
+        "dia disponivel";
+
+      item.onclick = () => {
+
+        document
+          .querySelectorAll(
+            ".dia"
+          )
+          .forEach(
+            d =>
+              d.classList.remove(
+                "selecionado"
+              )
+          );
+
+        item.classList.add(
+          "selecionado"
+        );
+
+        dataSelecionada =
+          dataFormatada;
+
+        document
+          .getElementById(
+            "dataSelecionada"
+          ).value =
+          dataFormatada;
+
+        carregarHorarios();
+
+      };
+
+    } else {
+
+      item.className =
+        "dia indisponivel";
+
+    }
+
+    grade.appendChild(item);
+
+  }
+
+  container.appendChild(
+    grade
+  );
+
+}
 
   const { data, error } =
     await supabaseClient
