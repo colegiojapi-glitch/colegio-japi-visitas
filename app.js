@@ -259,19 +259,37 @@ document
         horarioSelect.value;
 
       const { error } =
-        await supabaseClient
-          .from("agendamentos")
-          .insert([
-            {
-              responsavel,
-              telefone,
-              email,
-              aluno,
-              turma,
-              data: dataSelecionada,
-              horario
-            }
-          ]);
+  await supabaseClient
+    .from("agendamentos")
+    .insert([
+      {
+        responsavel,
+        telefone,
+        email,
+        aluno,
+        turma,
+        data: dataSelecionada,
+        horario
+      }
+    ]);
+
+if (error) {
+
+  console.error(error);
+
+  mensagem.innerHTML =
+    "Erro ao salvar o agendamento.";
+
+  return;
+}
+
+await supabaseClient
+  .from("horarios")
+  .update({
+    disponivel: false
+  })
+  .eq("data_id", dataInfo.id)
+  .eq("horario", horario);
 
       if (error) {
 
