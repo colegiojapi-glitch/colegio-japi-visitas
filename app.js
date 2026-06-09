@@ -11,7 +11,7 @@ const supabaseClient =
   );
 
 let dataSelecionada = null;
-
+let dataIdSelecionada = null;
 let datasDisponiveis = [];
 
 const horarioSelect =
@@ -35,17 +35,11 @@ async function carregarDatas() {
   }
 
   datasDisponiveis =
-  data.map(item =>
-    String(item.data).substring(0, 10)
-  );
-
-console.log(
-  "Datas carregadas:",
-  datasDisponiveis
-);
+    data.map(item =>
+      String(item.data).substring(0, 10)
+    );
 
   gerarCalendarios();
-
 }
 
 function gerarCalendarios() {
@@ -62,12 +56,9 @@ function gerarCalendarios() {
     hoje.getMonth() === 11
       ? hoje.getFullYear() + 1
       : hoje.getFullYear(),
-
     (hoje.getMonth() + 1) % 12,
-
     "proximoMes"
   );
-
 }
 
 function criarCalendario(
@@ -174,13 +165,11 @@ function criarCalendario(
     }
 
     grade.appendChild(item);
-
   }
 
   container.appendChild(
     grade
   );
-
 }
 
 async function carregarHorarios() {
@@ -191,20 +180,26 @@ async function carregarHorarios() {
   horarioSelect.innerHTML =
     '<option>Carregando...</option>';
 
-  const { data: dataInfo } =
+  const { data: dataInfo, error } =
     await supabaseClient
       .from("datas_disponiveis")
       .select("*")
       .eq("data", dataSelecionada)
       .single();
 
-  if (!dataInfo) return;
+  if (error || !dataInfo) {
+    console.error(error);
+    return;
+  }
+
+  dataIdSelecionada =
+    dataInfo.id;
 
   const { data: horarios } =
     await supabaseClient
       .from("horarios")
       .select("*")
-      .eq("data_id", dataInfo.id)
+      .eq("data_id", dataIdSelecionada)
       .eq("disponivel", true)
       .order("horario");
 
@@ -237,7 +232,6 @@ document
           "Selecione uma data.";
 
         return;
-
       }
 
       const responsavel =
@@ -259,54 +253,19 @@ document
         horarioSelect.value;
 
       const { error } =
-  await supabaseClient
-    .from("agendamentos")
-    .insert([
-      {
-        responsavel,
-        telefone,
-        email,
-        aluno,
-        turma,
-        data: dataSelecionada,
-        horario
-      }
-    ]);
-
-if (error) {
-
-  console.error(error);
-
-  mensagem.innerHTML =
-    "Erro ao salvar o agendamento.";
-
-  return;
-}
-
-const resultadoUpdate =
-  await supabaseClient
-    .from("horarios")
-    .update({
-      disponivel: false
-    })
-    .eq("data_id", dataInfo.id)
-    .eq("horario", horario)
-    .select();
-
-console.log(
-  "DATA INFO:",
-  dataInfo
-);
-
-console.log(
-  "HORARIO:",
-  horario
-);
-
-console.log(
-  "UPDATE:",
-  resultadoUpdate
-);
+        await supabaseClient
+          .from("agendamentos")
+          .insert([
+            {
+              responsavel,
+              telefone,
+              email,
+              aluno,
+              turma,
+              data: dataSelecionada,
+              horario
+            }
+          ]);
 
       if (error) {
 
@@ -316,7 +275,27 @@ console.log(
           "Erro ao salvar o agendamento.";
 
         return;
+      }
 
+      const { error: erroBloqueio } =
+        await supabaseClient
+          .from("horarios")
+          .update({
+            disponivel: false
+          })
+          .eq(
+            "data_id",
+            dataIdSelecionada
+          )
+          .eq(
+            "horario",
+            horario
+          );
+
+      if (erroBloqueio) {
+        console.error(
+          erroBloqueio
+        );
       }
 
       mensagem.innerHTML =
@@ -349,18 +328,7 @@ Telefone: ${telefone}`;
         .getElementById("agendamentoForm")
         .reset();
 
-      horarioSelect.innerHTML =
-        '<option>Selecione uma data</option>';
-
-      dataSelecionada = null;
-
-      document
-        .querySelectorAll(".dia")
-        .forEach(d =>
-          d.classList.remove(
-            "selecionado"
-          )
-        );
+      await carregarHorarios();
 
     }
   );
