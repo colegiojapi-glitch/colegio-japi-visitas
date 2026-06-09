@@ -34,6 +34,25 @@ async function carregarDatas() {
     return;
   }
 
+  datasDisponiveis =
+    data.map(item => item.data);
+
+  gerarCalendarios();
+
+}
+
+  const { data, error } =
+    await supabaseClient
+      .from("datas_disponiveis")
+      .select("*")
+      .eq("ativa", true)
+      .order("data");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
   dataSelect.innerHTML =
     '<option value="">Selecione a data</option>';
 
