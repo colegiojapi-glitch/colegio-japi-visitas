@@ -250,7 +250,7 @@ if (erroHorarios) {
   return;
 }
 
-await carregarDatasAdmin();
+ carregarDatasAdmin();
 
 alert(
 "Data criada com sucesso."
