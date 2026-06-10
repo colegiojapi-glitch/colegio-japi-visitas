@@ -1,0 +1,47 @@
+body{
+  margin:0;
+  padding:20px;
+  font-family:Arial,sans-serif;
+  background:#f4f4f4;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+h1{
+  text-align:center;
+  color:#f57c00;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+}
+
+th,
+td{
+  padding:12px;
+  border:1px solid #ddd;
+  text-align:center;
+}
+
+th{
+  background:#f57c00;
+  color:white;
+}
+
+button{
+  background:#d32f2f;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  cursor:pointer;
+  border-radius:5px;
+}
+
+button:hover{
+  opacity:0.9;
+}
