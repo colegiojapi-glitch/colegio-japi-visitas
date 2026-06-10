@@ -121,11 +121,26 @@ function criarCalendario(
 
     item.innerText = dia;
 
-    if (
-      datasDisponiveis.includes(
-        dataFormatada
-      )
-    ) {
+    const hoje = new Date();
+
+hoje.setHours(
+  0,
+  0,
+  0,
+  0
+);
+
+const dataAtual =
+  new Date(
+    dataFormatada + "T00:00:00"
+  );
+
+if (
+  datasDisponiveis.includes(
+    dataFormatada
+  ) &&
+  dataAtual >= hoje
+)
 
       item.className =
         "dia disponivel";
