@@ -188,15 +188,14 @@ ativa: true
 
 if (error) {
 
-console.error(error);
+  console.error(error);
 
-alert(
-"Erro ao criar data."
-);
+  alert(
+    JSON.stringify(error)
+  );
 
-return;
-
-}
+  return;
+}}
 
 const horariosPadrao = [
 "10:00",
