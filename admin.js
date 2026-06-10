@@ -195,7 +195,7 @@ if (error) {
   );
 
   return;
-}}
+}
 
 const horariosPadrao = [
 "10:00",
@@ -233,7 +233,7 @@ if (erroHorario) {
   return;
 }
 
-if (erroHorarios) {
+if (erroHorario) {
   console.error(
     "ERRO HORARIOS:",
     erroHorarios
