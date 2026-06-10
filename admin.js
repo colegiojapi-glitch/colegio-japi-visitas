@@ -38,29 +38,28 @@ lista.innerHTML = "";
 
 data.forEach(item => {
 
-```
 lista.innerHTML += `
-  <tr>
-    <td>${item.data}</td>
-    <td>${item.horario}</td>
-    <td>${item.responsavel}</td>
-    <td>${item.aluno}</td>
-    <td>${item.turma}</td>
-    <td>${item.telefone}</td>
-    <td>
-      <button
-        onclick="cancelarAgendamento(
-          ${item.id},
-          '${item.data}',
-          '${item.horario}'
-        )"
-      >
-        Cancelar
-      </button>
-    </td>
-  </tr>
+
+<tr>
+<td>${item.data}</td>
+<td>${item.horario}</td>
+<td>${item.responsavel}</td>
+<td>${item.aluno}</td>
+<td>${item.turma}</td>
+<td>${item.telefone}</td>
+<td>
+<button
+onclick="cancelarAgendamento(
+${item.id},
+'${item.data}',
+'${item.horario}'
+)"
+>
+Cancelar
+</button>
+</td>
+</tr>
 `;
-```
 
 });
 
@@ -134,26 +133,25 @@ listaDatas.innerHTML = "";
 
 data.forEach(item => {
 
-```
 listaDatas.innerHTML += `
-  <tr>
-    <td>${item.data}</td>
-    <td>
-      ${item.ativa ? "✅ Ativa" : "❌ Inativa"}
-    </td>
-    <td>
-      <button
-        onclick="alterarStatusData(
-          ${item.id},
-          ${item.ativa}
-        )"
-      >
-        ${item.ativa ? "Desativar" : "Ativar"}
-      </button>
-    </td>
-  </tr>
+
+<tr>
+<td>${item.data}</td>
+<td>
+${item.ativa ? "✅ Ativa" : "❌ Inativa"}
+</td>
+<td>
+<button
+onclick="alterarStatusData(
+${item.id},
+${item.ativa}
+)"
+>
+${item.ativa ? "Desativar" : "Ativar"}
+</button>
+</td>
+</tr>
 `;
-```
 
 });
 
@@ -168,13 +166,11 @@ document.getElementById(
 
 if (!dataNova) {
 
-```
 alert(
-  "Selecione uma data."
+"Selecione uma data."
 );
 
 return;
-```
 
 }
 
@@ -192,15 +188,13 @@ ativa: true
 
 if (error) {
 
-```
 console.error(error);
 
 alert(
-  "Erro ao criar data."
+"Erro ao criar data."
 );
 
 return;
-```
 
 }
 
