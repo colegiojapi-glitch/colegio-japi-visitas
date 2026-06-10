@@ -120,49 +120,19 @@ function criarCalendario(
       document.createElement("div");
 
     item.innerText = dia;
+    item.classList.add("dia");
 
     if (
-  datasDisponiveis.includes(
-    dataFormatada
-  )
-) {
+      datasDisponiveis.includes(
+        dataFormatada
+      )
+    ) {
 
-  item.className =
-    "dia disponivel";
-
-  item.onclick = () => {
-
-    document
-      .querySelectorAll(".dia")
-      .forEach(d =>
-        d.classList.remove(
-          "selecionado"
-        )
+      item.classList.add(
+        "disponivel"
       );
 
-    item.classList.add(
-      "selecionado"
-    );
-
-    dataSelecionada =
-      dataFormatada;
-
-    document
-      .getElementById(
-        "dataSelecionada"
-      ).value =
-      dataFormatada;
-
-    carregarHorarios();
-
-  };
-
-} else {
-
-  item.className =
-    "dia indisponivel";
-
-}
+      item.onclick = () => {
 
         document
           .querySelectorAll(".dia")
@@ -191,17 +161,20 @@ function criarCalendario(
 
     } else {
 
-      item.className =
-        "dia indisponivel";
+      item.classList.add(
+        "indisponivel"
+      );
 
     }
 
     grade.appendChild(item);
+
   }
 
   container.appendChild(
     grade
   );
+
 }
 
 async function carregarHorarios() {
@@ -264,6 +237,7 @@ document
           "Selecione uma data.";
 
         return;
+
       }
 
       const responsavel =
@@ -307,28 +281,22 @@ document
           "Erro ao salvar o agendamento.";
 
         return;
+
       }
 
-      const { error: erroBloqueio } =
-        await supabaseClient
-          .from("horarios")
-          .update({
-            disponivel: false
-          })
-          .eq(
-            "data_id",
-            dataIdSelecionada
-          )
-          .eq(
-            "horario",
-            horario
-          );
-
-      if (erroBloqueio) {
-        console.error(
-          erroBloqueio
+      await supabaseClient
+        .from("horarios")
+        .update({
+          disponivel: false
+        })
+        .eq(
+          "data_id",
+          dataIdSelecionada
+        )
+        .eq(
+          "horario",
+          horario
         );
-      }
 
       mensagem.innerHTML =
         "Visita agendada com sucesso!";
@@ -360,7 +328,8 @@ Telefone: ${telefone}`;
         .getElementById("agendamentoForm")
         .reset();
 
-      await carregarHorarios();
+      horarioSelect.innerHTML =
+        '<option>Selecione uma data</option>';
 
     }
   );
