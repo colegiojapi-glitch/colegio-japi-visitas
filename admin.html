@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo - Colégio Japi</title>
+
+  <link rel="stylesheet" href="admin.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Painel Administrativo</h1>
+
+  <table>
+
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Horário</th>
+        <th>Responsável</th>
+        <th>Aluno</th>
+        <th>Turma</th>
+        <th>Telefone</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+
+    <tbody id="listaAgendamentos">
+      <tr>
+        <td colspan="7">
+          Carregando...
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script src="admin.js"></script>
+
+</body>
+</html>
