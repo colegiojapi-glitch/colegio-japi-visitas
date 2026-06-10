@@ -137,15 +137,11 @@ data.forEach(item => {
 ```
 listaDatas.innerHTML += `
   <tr>
-
     <td>${item.data}</td>
-
     <td>
       ${item.ativa ? "✅ Ativa" : "❌ Inativa"}
     </td>
-
     <td>
-
       <button
         onclick="alterarStatusData(
           ${item.id},
@@ -154,9 +150,7 @@ listaDatas.innerHTML += `
       >
         ${item.ativa ? "Desativar" : "Ativar"}
       </button>
-
     </td>
-
   </tr>
 `;
 ```
@@ -234,7 +228,7 @@ await supabaseClient
 .from("horarios")
 .insert(horarios);
 
-carregarDatasAdmin();
+await carregarDatasAdmin();
 
 alert(
 "Data criada com sucesso."
