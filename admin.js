@@ -217,10 +217,21 @@ disponivel: true
 })
 );
 
-const { error: erroHorarios } =
-  await supabaseClient
-    .from("horarios")
-    .insert(horarios);
+const { error: erroHorario } =
+await supabaseClient
+.from("horarios")
+.insert(horarios);
+
+if (erroHorario) {
+
+  console.error(erroHorario);
+
+  alert(
+    JSON.stringify(erroHorario)
+  );
+
+  return;
+}
 
 if (erroHorarios) {
   console.error(
