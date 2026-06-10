@@ -125,12 +125,44 @@ function criarCalendario(
   datasDisponiveis.includes(
     dataFormatada
   )
-)
+) {
 
-      item.className =
-        "dia disponivel";
+  item.className =
+    "dia disponivel";
 
-      item.onclick = () => {
+  item.onclick = () => {
+
+    document
+      .querySelectorAll(".dia")
+      .forEach(d =>
+        d.classList.remove(
+          "selecionado"
+        )
+      );
+
+    item.classList.add(
+      "selecionado"
+    );
+
+    dataSelecionada =
+      dataFormatada;
+
+    document
+      .getElementById(
+        "dataSelecionada"
+      ).value =
+      dataFormatada;
+
+    carregarHorarios();
+
+  };
+
+} else {
+
+  item.className =
+    "dia indisponivel";
+
+}
 
         document
           .querySelectorAll(".dia")
