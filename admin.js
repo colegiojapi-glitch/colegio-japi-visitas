@@ -122,5 +122,156 @@ async function cancelarAgendamento(
   carregarAgendamentos();
 
 }
+const listaDatas =
+document.getElementById(
+"listaDatas"
+);
+
+async function carregarDatasAdmin() {
+
+const { data, error } =
+await supabaseClient
+.from("datas_disponiveis")
+.select("*")
+.order("data");
+
+if (error) {
+console.error(error);
+return;
+}
+
+listaDatas.innerHTML = "";
+
+data.forEach(item => {
+
+```
+listaDatas.innerHTML += `
+  <tr>
+
+    <td>${item.data}</td>
+
+    <td>
+      ${item.ativa ? "✅ Ativa" : "❌ Inativa"}
+    </td>
+
+    <td>
+
+      <button
+        onclick="alterarStatusData(
+          ${item.id},
+          ${item.ativa}
+        )"
+      >
+        ${item.ativa ? "Desativar" : "Ativar"}
+      </button>
+
+    </td>
+
+  </tr>
+`;
+```
+
+});
+
+}
+
+async function criarData() {
+
+const dataNova =
+document.getElementById(
+"novaData"
+).value;
+
+if (!dataNova) {
+
+```
+alert(
+  "Selecione uma data."
+);
+
+return;
+```
+
+}
+
+const { data, error } =
+await supabaseClient
+.from("datas_disponiveis")
+.insert([
+{
+data: dataNova,
+ativa: true
+}
+])
+.select()
+.single();
+
+if (error) {
+
+```
+console.error(error);
+
+alert(
+  "Erro ao criar data."
+);
+
+return;
+```
+
+}
+
+const horariosPadrao = [
+
+```
+"10:00",
+"11:00",
+"13:30",
+"14:00",
+"14:30",
+"15:00",
+"16:00",
+"17:00"
+```
+
+];
+
+const horarios =
+horariosPadrao.map(
+horario => ({
+data_id: data.id,
+horario,
+disponivel: true
+})
+);
+
+await supabaseClient
+.from("horarios")
+.insert(horarios);
+
+carregarDatasAdmin();
+
+alert(
+"Data criada com sucesso."
+);
+
+}
+
+async function alterarStatusData(
+id,
+statusAtual
+) {
+
+await supabaseClient
+.from("datas_disponiveis")
+.update({
+ativa: !statusAtual
+})
+.eq("id", id);
+
+carregarDatasAdmin();
+
+}
 
 carregarAgendamentos();
+carregarDatasAdmin();
+
