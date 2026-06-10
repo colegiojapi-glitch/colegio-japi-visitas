@@ -218,9 +218,27 @@ disponivel: true
 })
 );
 
-await supabaseClient
-.from("horarios")
-.insert(horarios);
+const { error: erroHorarios } =
+  await supabaseClient
+    .from("horarios")
+    .insert(horarios);
+
+if (erroHorarios) {
+  console.error(
+    "ERRO HORARIOS:",
+    erroHorarios
+  );
+
+  alert(
+    JSON.stringify(
+      erroHorarios,
+      null,
+      2
+    )
+  );
+
+  return;
+}
 
 await carregarDatasAdmin();
 
