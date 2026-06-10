@@ -172,7 +172,7 @@ function criarCalendario(
   );
 }
 
-async function carregarHorarios() {
+async function carregarHorarios() 
 
   if (!dataSelecionada)
     return;
