@@ -300,5 +300,51 @@ window.location.href =
 
 }
 
+async function exportarExcel() {
+
+const { data, error } =
+await supabaseClient
+.from("agendamentos")
+.select("*")
+.order("data")
+.order("horario");
+
+if (error) {
+
+  alert(
+    "Erro ao carregar agendamentos."
+  );
+
+  return;
+}
+
+const planilha =
+XLSX.utils.json_to_sheet(
+  data.map(item => ({
+    Data: item.data,
+    Horário: item.horario,
+    Responsável: item.responsavel,
+    Aluno: item.aluno,
+    Turma: item.turma,
+    Telefone: item.telefone
+  }))
+);
+
+const workbook =
+XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(
+  workbook,
+  planilha,
+  "Agendamentos"
+);
+
+XLSX.writeFile(
+  workbook,
+  "agendamentos.xlsx"
+);
+
+}
+
 carregarAgendamentos();
 carregarDatasAdmin();
