@@ -2,7 +2,7 @@
 
 <html lang="pt-BR">
 <head>
-  
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel Administrativo - Colégio Japi</title>
@@ -11,17 +11,19 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
 </head>
 <body>
 
 <div class="container">
 
   <h1>Painel Administrativo</h1>
-  
-<button onclick="logout()">
-Sair
-</button>
-  
+
+  <button onclick="logout()">
+    Sair
+  </button>
+
   <h2>Nova Data</h2>
 
   <div class="nova-data">
@@ -68,9 +70,9 @@ Sair
   <h2>Agendamentos</h2>
 
   <button onclick="exportarExcel()">
-Exportar Excel
-</button>
-  
+    Exportar Excel
+  </button>
+
   <table>
 
 ```
@@ -103,3 +105,4 @@ Exportar Excel
 
 </body>
 </html>
+
