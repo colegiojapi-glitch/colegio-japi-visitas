@@ -45,3 +45,31 @@ button{
 button:hover{
   opacity:0.9;
 }
+
+.dashboard{
+  display:flex;
+  gap:15px;
+  margin:20px 0;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+  min-width:180px;
+  flex:1;
+  text-align:center;
+}
+
+.card h3{
+  margin:0;
+  font-size:32px;
+  color:#f57c00;
+}
+
+.card p{
+  margin-top:8px;
+  font-weight:bold;
+}
