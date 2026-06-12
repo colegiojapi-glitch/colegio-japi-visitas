@@ -52,7 +52,9 @@ if (error) {
 console.error(error);
 return;
 }
-
+  
+todosAgendamentos = data;
+  
 lista.innerHTML = "";
 
 data.forEach(item => {
@@ -345,6 +347,69 @@ XLSX.writeFile(
   workbook,
   "agendamentos.xlsx"
 );
+
+}
+
+function filtrarAgendamentos() {
+
+const termo =
+document.getElementById(
+"busca"
+).value.toLowerCase();
+
+lista.innerHTML = "";
+
+todosAgendamentos
+.filter(item =>
+
+(item.responsavel || "")
+.toLowerCase()
+.includes(termo)
+
+||
+
+(item.aluno || "")
+.toLowerCase()
+.includes(termo)
+
+||
+
+(item.telefone || "")
+.toLowerCase()
+.includes(termo)
+
+||
+
+(item.turma || "")
+.toLowerCase()
+.includes(termo)
+
+)
+.forEach(item => {
+
+lista.innerHTML += `
+<tr>
+<td>${item.data}</td>
+<td>${item.horario}</td>
+<td>${item.responsavel}</td>
+<td>${item.aluno}</td>
+<td>${item.turma}</td>
+<td>${item.telefone}</td>
+<td>
+<button
+onclick="cancelarAgendamento(
+${item.id},
+'${item.data}',
+'${item.horario}'
+)"
+>
+Cancelar
+</button>
+</td>
+</tr>
+`;
+
+});
 
 }
 
