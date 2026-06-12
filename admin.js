@@ -32,6 +32,8 @@ document.getElementById(
 "listaAgendamentos"
 );
 
+let todosAgendamentos = [];
+
 const listaDatas =
 document.getElementById(
 "listaDatas"
