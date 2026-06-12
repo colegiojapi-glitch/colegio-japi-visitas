@@ -346,5 +346,57 @@ XLSX.writeFile(
 
 }
 
+async function carregarDashboard() {
+
+const { count: totalDatas } =
+await supabaseClient
+.from("datas_disponiveis")
+.select("*", {
+  count: "exact",
+  head: true
+})
+.eq("ativa", true);
+
+const { count: totalAgendamentos } =
+await supabaseClient
+.from("agendamentos")
+.select("*", {
+  count: "exact",
+  head: true
+});
+
+const { count: totalLivres } =
+await supabaseClient
+.from("horarios")
+.select("*", {
+  count: "exact",
+  head: true
+})
+.eq("disponivel", true);
+
+const { count: totalOcupados } =
+await supabaseClient
+.from("horarios")
+.select("*", {
+  count: "exact",
+  head: true
+})
+.eq("disponivel", false);
+
+document.getElementById("totalDatas").innerText =
+totalDatas || 0;
+
+document.getElementById("totalAgendamentos").innerText =
+totalAgendamentos || 0;
+
+document.getElementById("totalLivres").innerText =
+totalLivres || 0;
+
+document.getElementById("totalOcupados").innerText =
+totalOcupados || 0;
+
+}
+
+carregarDashboard();
 carregarAgendamentos();
 carregarDatasAdmin();
