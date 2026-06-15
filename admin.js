@@ -9,19 +9,20 @@ window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
+
 (async () => {
 
 const {
-  data: { session }
+data: { session }
 } =
 await supabaseClient.auth.getSession();
 
 if (!session) {
 
-  window.location.href =
-  "login.html";
+window.location.href =
+"login.html";
 
-  return;
+return;
 
 }
 
@@ -32,12 +33,12 @@ document.getElementById(
 "listaAgendamentos"
 );
 
-let todosAgendamentos = [];
-
 const listaDatas =
 document.getElementById(
 "listaDatas"
 );
+
+let todosAgendamentos = [];
 
 async function carregarAgendamentos() {
 
@@ -52,9 +53,9 @@ if (error) {
 console.error(error);
 return;
 }
-  
+
 todosAgendamentos = data;
-  
+
 lista.innerHTML = "";
 
 data.forEach(item => {
@@ -100,20 +101,33 @@ if (
 return;
 }
 
-const { data: dataInfo } =
+try {
+
+const {
+data: dataInfo,
+error: erroData
+} =
 await supabaseClient
 .from("datas_disponiveis")
 .select("*")
 .eq("data", data)
 .single();
 
-if (!dataInfo) {
+if (erroData || !dataInfo) {
+
+console.error(erroData);
+
 alert(
 "Data não encontrada."
 );
+
 return;
+
 }
 
+const {
+error: erroHorario
+} =
 await supabaseClient
 .from("horarios")
 .update({
@@ -128,81 +142,63 @@ dataInfo.id
 horario
 );
 
-await supabaseClient
-.from("agendamentos")
-.delete()
-.eq("id", id);
-
-async function cancelarAgendamento(
-id,
-data,
-horario
-) {
-
-if (
-!confirm(
-"Cancelar este agendamento?"
-)
-) {
-return;
-}
-
-try {
-
-const { data: dataInfo, error: erroData } =
-await supabaseClient
-.from("datas_disponiveis")
-.select("*")
-.eq("data", data)
-.single();
-
-if (erroData) {
-alert(JSON.stringify(erroData));
-return;
-}
-
-const { error: erroHorario } =
-await supabaseClient
-.from("horarios")
-.update({
-disponivel: true
-})
-.eq("data_id", dataInfo.id)
-.eq("horario", horario);
-
 if (erroHorario) {
-alert(JSON.stringify(erroHorario));
+
+console.error(
+erroHorario
+);
+
+alert(
+"Erro ao liberar horário."
+);
+
 return;
+
 }
 
-const { error: erroDelete } =
+const {
+error: erroDelete
+} =
 await supabaseClient
 .from("agendamentos")
 .delete()
-.eq("id", id);
+.eq(
+"id",
+id
+);
 
 if (erroDelete) {
-alert(JSON.stringify(erroDelete));
+
+console.error(
+erroDelete
+);
+
+alert(
+JSON.stringify(
+erroDelete
+)
+);
+
 return;
+
 }
 
 await carregarAgendamentos();
 await carregarDashboard();
 
-alert("Agendamento cancelado!");
+alert(
+"Agendamento cancelado com sucesso!"
+);
 
 } catch (erro) {
 
 console.error(erro);
 
 alert(
-"Erro ao cancelar agendamento."
+"Erro inesperado ao cancelar."
 );
 
 }
-
-}
-
 
 }
 
@@ -278,13 +274,14 @@ ativa: true
 
 if (error) {
 
-  console.error(error);
+console.error(error);
 
-  alert(
-    JSON.stringify(error)
-  );
+alert(
+JSON.stringify(error)
+);
 
-  return;
+return;
+
 }
 
 const horariosPadrao = [
@@ -307,40 +304,31 @@ disponivel: true
 })
 );
 
-const { error: erroHorario } =
+const {
+error: erroHorario
+} =
 await supabaseClient
 .from("horarios")
 .insert(horarios);
 
 if (erroHorario) {
 
-  console.error(erroHorario);
+console.error(
+erroHorario
+);
 
-  alert(
-    JSON.stringify(erroHorario)
-  );
+alert(
+JSON.stringify(
+erroHorario
+)
+);
 
-  return;
+return;
+
 }
 
-if (erroHorario) {
-  console.error(
-    "ERRO HORARIOS:",
-    erroHorarios
-  );
-
-  alert(
-    JSON.stringify(
-      erroHorarios,
-      null,
-      2
-    )
-  );
-
-  return;
-}
-
- carregarDatasAdmin();
+await carregarDatasAdmin();
+await carregarDashboard();
 
 alert(
 "Data criada com sucesso."
@@ -360,13 +348,16 @@ ativa: !statusAtual
 })
 .eq("id", id);
 
-carregarDatasAdmin();
+await carregarDatasAdmin();
+await carregarDashboard();
 
 }
 
 async function logout() {
 
-await supabaseClient.auth.signOut();
+await supabaseClient
+.auth
+.signOut();
 
 window.location.href =
 "login.html";
@@ -384,37 +375,38 @@ await supabaseClient
 
 if (error) {
 
-  alert(
-    "Erro ao carregar agendamentos."
-  );
+alert(
+"Erro ao carregar agendamentos."
+);
 
-  return;
+return;
+
 }
 
 const planilha =
 XLSX.utils.json_to_sheet(
-  data.map(item => ({
-    Data: item.data,
-    Horário: item.horario,
-    Responsável: item.responsavel,
-    Aluno: item.aluno,
-    Turma: item.turma,
-    Telefone: item.telefone
-  }))
+data.map(item => ({
+Data: item.data,
+Horário: item.horario,
+Responsável: item.responsavel,
+Aluno: item.aluno,
+Turma: item.turma,
+Telefone: item.telefone
+}))
 );
 
 const workbook =
 XLSX.utils.book_new();
 
 XLSX.utils.book_append_sheet(
-  workbook,
-  planilha,
-  "Agendamentos"
+workbook,
+planilha,
+"Agendamentos"
 );
 
 XLSX.writeFile(
-  workbook,
-  "agendamentos.xlsx"
+workbook,
+"agendamentos.xlsx"
 );
 
 }
@@ -457,6 +449,7 @@ todosAgendamentos
 .forEach(item => {
 
 lista.innerHTML += `
+
 <tr>
 <td>${item.data}</td>
 <td>${item.horario}</td>
@@ -488,8 +481,8 @@ const { count: totalDatas } =
 await supabaseClient
 .from("datas_disponiveis")
 .select("*", {
-  count: "exact",
-  head: true
+count: "exact",
+head: true
 })
 .eq("ativa", true);
 
@@ -497,16 +490,16 @@ const { count: totalAgendamentos } =
 await supabaseClient
 .from("agendamentos")
 .select("*", {
-  count: "exact",
-  head: true
+count: "exact",
+head: true
 });
 
 const { count: totalLivres } =
 await supabaseClient
 .from("horarios")
 .select("*", {
-  count: "exact",
-  head: true
+count: "exact",
+head: true
 })
 .eq("disponivel", true);
 
@@ -514,21 +507,29 @@ const { count: totalOcupados } =
 await supabaseClient
 .from("horarios")
 .select("*", {
-  count: "exact",
-  head: true
+count: "exact",
+head: true
 })
 .eq("disponivel", false);
 
-document.getElementById("totalDatas").innerText =
+document.getElementById(
+"totalDatas"
+).innerText =
 totalDatas || 0;
 
-document.getElementById("totalAgendamentos").innerText =
+document.getElementById(
+"totalAgendamentos"
+).innerText =
 totalAgendamentos || 0;
 
-document.getElementById("totalLivres").innerText =
+document.getElementById(
+"totalLivres"
+).innerText =
 totalLivres || 0;
 
-document.getElementById("totalOcupados").innerText =
+document.getElementById(
+"totalOcupados"
+).innerText =
 totalOcupados || 0;
 
 }
