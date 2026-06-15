@@ -133,7 +133,76 @@ await supabaseClient
 .delete()
 .eq("id", id);
 
-carregarAgendamentos();
+async function cancelarAgendamento(
+id,
+data,
+horario
+) {
+
+if (
+!confirm(
+"Cancelar este agendamento?"
+)
+) {
+return;
+}
+
+try {
+
+const { data: dataInfo, error: erroData } =
+await supabaseClient
+.from("datas_disponiveis")
+.select("*")
+.eq("data", data)
+.single();
+
+if (erroData) {
+alert(JSON.stringify(erroData));
+return;
+}
+
+const { error: erroHorario } =
+await supabaseClient
+.from("horarios")
+.update({
+disponivel: true
+})
+.eq("data_id", dataInfo.id)
+.eq("horario", horario);
+
+if (erroHorario) {
+alert(JSON.stringify(erroHorario));
+return;
+}
+
+const { error: erroDelete } =
+await supabaseClient
+.from("agendamentos")
+.delete()
+.eq("id", id);
+
+if (erroDelete) {
+alert(JSON.stringify(erroDelete));
+return;
+}
+
+await carregarAgendamentos();
+await carregarDashboard();
+
+alert("Agendamento cancelado!");
+
+} catch (erro) {
+
+console.error(erro);
+
+alert(
+"Erro ao cancelar agendamento."
+);
+
+}
+
+}
+
 
 }
 
