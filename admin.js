@@ -157,14 +157,23 @@ return;
 }
 
 const {
+data: registroApagado,
 error: erroDelete
 } =
 await supabaseClient
 .from("agendamentos")
 .delete()
-.eq(
-"id",
-id
+.eq("id", id)
+.select();
+
+console.log(
+"DELETE RESULT:",
+registroApagado
+);
+
+console.log(
+"DELETE ERROR:",
+erroDelete
 );
 
 if (erroDelete) {
