@@ -232,19 +232,39 @@ listaDatas.innerHTML += `
 
 <tr>
 <td>${item.data}</td>
+
 <td>
 ${item.ativa ? "✅ Ativa" : "❌ Inativa"}
 </td>
+
 <td>
+
 <button
 onclick="alterarStatusData(
 ${item.id},
 ${item.ativa}
 )"
+
 >
-${item.ativa ? "Desativar" : "Ativar"}
-</button>
+
+${item.ativa ? "Desativar" : "Ativar"} </button>
+
+<button
+onclick="excluirData(
+${item.id},
+'${item.data}'
+)"
+style="
+margin-left:5px;
+background:#b71c1c;
+"
+
+>
+
+Excluir </button>
+
 </td>
+
 </tr>
 `;
 
