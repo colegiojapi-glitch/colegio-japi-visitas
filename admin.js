@@ -563,6 +563,78 @@ totalOcupados || 0;
 
 }
 
+async function excluirData(
+id,
+data
+) {
+
+if (
+!confirm(
+`Deseja excluir a data ${data}?`
+)
+) {
+return;
+}
+
+const {
+error: erroHorarios
+} =
+await supabaseClient
+.from("horarios")
+.delete()
+.eq(
+"data_id",
+id
+);
+
+if (erroHorarios) {
+
+alert(
+"Erro ao excluir horários."
+);
+
+console.error(
+erroHorarios
+);
+
+return;
+
+}
+
+const {
+error: erroData
+} =
+await supabaseClient
+.from("datas_disponiveis")
+.delete()
+.eq(
+"id",
+id
+);
+
+if (erroData) {
+
+alert(
+"Erro ao excluir data."
+);
+
+console.error(
+erroData
+);
+
+return;
+
+}
+
+await carregarDatasAdmin();
+await carregarDashboard();
+
+alert(
+"Data excluída com sucesso!"
+);
+
+}
+
 carregarDashboard();
 carregarAgendamentos();
 carregarDatasAdmin();
