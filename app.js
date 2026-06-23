@@ -284,19 +284,39 @@ document
 
       }
 
-      await supabaseClient
-        .from("horarios")
-        .update({
-          disponivel: false
-        })
-        .eq(
-          "data_id",
-          dataIdSelecionada
-        )
-        .eq(
-          "horario",
-          horario
-        );
+      const {
+error: erroHorario
+} =
+await supabaseClient
+.from("horarios")
+.update({
+disponivel: false
+})
+.eq(
+"data_id",
+dataIdSelecionada
+)
+.eq(
+"horario",
+horario
+);
+
+if (erroHorario) {
+
+console.error(
+"ERRO HORARIO:",
+erroHorario
+);
+
+alert(
+JSON.stringify(
+erroHorario
+)
+);
+
+return;
+
+}
 
       mensagem.innerHTML =
         "Visita agendada com sucesso!";
